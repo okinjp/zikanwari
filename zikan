@@ -25,21 +25,21 @@ for m in ${li[@]}; do
   n3=`expr ${i} + 3`
   n4=`expr ${i} + 4`
   x_1=`expr $H - ${schedule[$n1]}`
-  x_2=$(( ${schedule[${n3}]} - $H ))
-  M_1=$(( $M - ${schedule[${n2}]} ))
-  M_2=$(( ${schedule[${n4}]} - $M ))
+  x_2=`expr ${schedule[${n3}]} - $H`
+  M_1=`expr $M - ${schedule[${n2}]}`
+  M_2=`expr ${schedule[${n4}]} - $M`
   time=90
   echo "${schedule[${n0}]}限 ${schedule[${n1}]}:${schedule[${n2}]} ~ ${schedule[${n3}]}:${schedule[${n4}]} "
   if [ ${x_1} -le 2 ] && [ ${x_2} -ge 0 ]; then
     if [ ${x_1} -eq 0 ]; then
         if [ ${M_1} -ge 0 ]; then
-          time=$(( ${time} - ${M_1}))
+          time=`expr ${time} - ${M_1}`
         fi
     else
       if [ ${x_1} -eq 1 ]; then
-        time=$(( ${time} - $(( 60 - ${schedule[${n2}]} )) - $M ))
+        time=`expr ${time} - $(( 60 - ${schedule[${n2}]} )) - $M`
       else
-        time=$(( ${time} - ${M_2} - 60 ))
+        time=`expr ${time} - ${M_2} - 60`
       fi
     fi
     echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
