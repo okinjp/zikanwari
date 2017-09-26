@@ -1,8 +1,8 @@
 #!/bin/sh
 
-_1=(1 9 25 10 55)
+_1=(1 09 25 10 55)
 _2=(2 11 10 12 40)
-_3=(3 13 0 14 30)
+_3=(3 13 00 14 30)
 _4=(4 14 45 16 15)
 _5=(5 16 30 18 00)
 _6=(6 18 10 19 40)
@@ -12,33 +12,34 @@ _7=(7 19 50 21 20)
 schedule=(${_1[@]} ${_2[@]} ${_3[@]} ${_4[@]} ${_5[@]} ${_6[@]} ${_7[@]})
 H=`date +%H`
 M=`date +%M`
+H=`expr $H + 0`
+M=`expr $M + 0`
 echo "現在時刻: $H:$M"
 
 declare -i i=0
 li=(0 1 2 3 4 5 6)
 for m in ${li[@]}; do
-  n0=${i}+0
-  n1=${i}+1
-  n2=${i}+2
-  n3=${i}+3
-  n4=${i}+4
-  echo "${schedule[${n0}]}限 ${schedule[${n1}]}:${schedule[${n2}]} ~ ${schedule[${n3}]}:${schedule[${n4}]} "
-  x_1=$(( $H - ${schedule[${n1}]} ))
+  n0=`expr ${i} + 0`
+  n1=`expr ${i} + 1`
+  n2=`expr ${i} + 2`
+  n3=`expr ${i} + 3`
+  n4=`expr ${i} + 4`
+  x_1=`expr $H - ${schedule[$n1]}`
   x_2=$(( ${schedule[${n3}]} - $H ))
-  if [ ${x_1} -ge 0 ] && [ ${x_2} -ge 0 ]; then
-    M_1=$(( $M - ${schedule[${n2}]} ))
-    M_2=$(( ${schedule[${n4}]} - $M ))
-    check_1=$(( $H - ${schedule[${n1}]} ))
-    check_2=$(( $H - ${schedule[${n3}]} ))
-    if [ ${check_1} -ge 0 ]; then
-      if [ ${M_1} -ge 0 ]; then
-        time=$(( 60 - $M + ${schedule[${n4}]}))
-      fi
-    else
-      if [ ${check_2} -ge 0 ]; then
-        if [ ${M_2} -ge 0 ]; then
-          time=$(( ${schedule[${n4}]} - $M ))
+  M_1=$(( $M - ${schedule[${n2}]} ))
+  M_2=$(( ${schedule[${n4}]} - $M ))
+  time=90
+  echo "${schedule[${n0}]}限 ${schedule[${n1}]}:${schedule[${n2}]} ~ ${schedule[${n3}]}:${schedule[${n4}]} "
+  if [ ${x_1} -le 2 ] && [ ${x_2} -ge 0 ]; then
+    if [ ${x_1} -eq 0 ]; then
+        if [ ${M_1} -ge 0 ]; then
+          time=$(( ${time} - ${M_1}))
         fi
+    else
+      if [ ${x_1} -eq 1 ]; then
+        time=$(( ${time} - $(( 60 - ${schedule[${n2}]} )) - $M ))
+      else
+        time=$(( ${time} - ${M_2} - 60 ))
       fi
     fi
     echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
