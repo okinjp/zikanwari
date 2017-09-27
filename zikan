@@ -24,25 +24,49 @@ for m in ${li[@]}; do
   n2=`expr ${i} + 2`
   n3=`expr ${i} + 3`
   n4=`expr ${i} + 4`
-  x_1=`expr $H - ${schedule[$n1]}`
-  x_2=`expr ${schedule[${n3}]} - $H`
+  H_1=`expr $H - ${schedule[$n1]}`
+  H_2=`expr ${schedule[${n3}]} - $H`
+  H_3=`expr ${schedule[${n3}]} - ${schedule[${n1}]}`
   M_1=`expr $M - ${schedule[${n2}]}`
   M_2=`expr ${schedule[${n4}]} - $M`
   time=90
+  #echo "${H_1} ${H_2} ${H_3} ${M_1} ${M_2}"
   echo "${schedule[${n0}]}限 ${schedule[${n1}]}:${schedule[${n2}]} ~ ${schedule[${n3}]}:${schedule[${n4}]} "
-  if [ ${x_1} -le 2 ] && [ ${x_2} -ge 0 ]; then
-    if [ ${x_1} -eq 0 ]; then
-        if [ ${M_1} -ge 0 ]; then
-          time=`expr ${time} - ${M_1}`
-        fi
-    else
-      if [ ${x_1} -eq 1 ]; then
-        time=`expr ${time} - $(( 60 - ${schedule[${n2}]} )) - $M`
+  if [ ${H_1} -le 2 ] && [ ${H_2} -ge 0 ] && [ ${H_1} -ge 0 ] && [ ${H_2} -le 2 ]; then
+    if [ ${H_3} -eq 2 ]; then
+      if [ ${H_1} -eq 0 ]; then
+          if [ ${M_1} -ge 0 ]; then
+            #echo "flag 1"
+            time=`expr ${time} - ${M_1}`
+            echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+          fi
       else
-        time=`expr ${time} - ${M_2} - 60`
+        if [ ${H_1} -eq 1 ]; then
+          #echo "flag 2"
+          time=`expr ${time} - $M - 60 + ${schedule[${n2}]}`
+        else
+          #echo "flag 3"
+          time=`expr ${time} - $M - 120 + ${schedule[${n2}]}`
+        fi
+        echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+      fi
+    else
+      if [ ${H_1} -eq 0 ]; then
+        if [ ${M_1} -ge 0 ]; then
+          #echo "flag 4"
+          time=`expr ${time} - ${M_1}`
+          echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+        fi
+      else
+        if [ ${H_2} -eq 0 ]; then
+          if [ ${M_2} -ge 0 ]; then
+            #echo "flag 5"
+            time=`expr ${time} - $M - 60 + ${schedule[${n2}]}`
+            echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+          fi
+        fi
       fi
     fi
-    echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
   fi
   i+=5
 done
