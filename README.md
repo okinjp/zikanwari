@@ -3,8 +3,8 @@
 ### 使い方
 - terminalを開く
 - `cd`
-- `git clone https://github.com/okinjp/zikanwari.git`
-- `cd zikanwari`
+- `git clone https://github.com/okinjp/zikanwari_bash.git`
+- `cd zikanwari_bash`
 - `sudo cp ./zikan /usr/local/bin/`
 - `sudo chmod +x /usr/local/bin/zikan`
 - `zikan`
