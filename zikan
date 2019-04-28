@@ -38,7 +38,7 @@ for m in ${li[@]}; do
           if [ ${M_1} -ge 0 ]; then
             #echo "flag 1"
             time=`expr ${time} - ${M_1}`
-            echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+            echo "~${schedule[${n0}]}限終了まで残り ${time}分~"
           fi
       else
         if [ ${H_1} -eq 1 ]; then
@@ -48,21 +48,21 @@ for m in ${li[@]}; do
           #echo "flag 3"
           time=`expr ${time} - $M - 120 + ${schedule[${n2}]}`
         fi
-        echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+        echo "~${schedule[${n0}]}限終了まで残り ${time}分~"
       fi
     else
       if [ ${H_1} -eq 0 ]; then
         if [ ${M_1} -ge 0 ]; then
           #echo "flag 4"
           time=`expr ${time} - ${M_1}`
-          echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+          echo "~${schedule[${n0}]}限終了まで残り ${time}分~"
         fi
       else
         if [ ${H_2} -eq 0 ]; then
           if [ ${M_2} -ge 0 ]; then
             #echo "flag 5"
             time=`expr ${time} - $M - 60 + ${schedule[${n2}]}`
-            echo "\n~${schedule[${n0}]}限終了まで残り ${time}分~\n"
+            echo "~${schedule[${n0}]}限終了まで残り ${time}分~"
           fi
         fi
       fi
